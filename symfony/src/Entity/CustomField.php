@@ -6,7 +6,8 @@ use App\Repository\CustomFieldRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Uid\Uuid;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * @ORM\Entity(repositoryClass=CustomFieldRepository::class)
@@ -15,7 +16,9 @@ class CustomField
 {
     /**
      * @ORM\Id
-     * @ORM\Column(type="uuid")
+     * @ORM\Column(type="ulid", unique=true)
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class=UlidGenerator::class)
      */
     private $id;
 
@@ -24,12 +27,7 @@ class CustomField
      */
     private $name;
 
-    public function __construct()
-    {
-      $this->id = Uuid::v4();
-    }
-
-    public function getId(): ?Uuid
+    public function getId(): ?Ulid
     {
         return $this->id;
     }

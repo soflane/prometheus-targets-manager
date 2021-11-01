@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use App\Repository\TargetRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Uid\Uuid;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * @ORM\Entity(repositoryClass=TargetRepository::class)
@@ -14,7 +16,9 @@ class Target {
 
   /**
    * @ORM\Id
-   * @ORM\Column(type="uuid")
+   * @ORM\Column(type="ulid", unique=true)
+   * @ORM\GeneratedValue(strategy="CUSTOM")
+   * @ORM\CustomIdGenerator(class=UlidGenerator::class)
    */
   private $id;
 
@@ -29,16 +33,16 @@ class Target {
   private $targetGroup;
 
   /**
-   * @ORM\OneToMany(targetEntity=CustomFieldValue::class, mappedBy="target", orphanRemoval=true)
+   * @ORM\OneToMany(targetEntity=CustomFieldValue::class, mappedBy="target",
+   *   orphanRemoval=true)
    */
   private $customFieldValues;
 
   public function __construct() {
-    $this->id = Uuid::v4();
     $this->customFieldValues = new ArrayCollection();
   }
 
-  public function getId(): ?Uuid {
+  public function getId(): ?Ulid {
     return $this->id;
   }
 
@@ -65,31 +69,28 @@ class Target {
   /**
    * @return Collection|CustomFieldValue[]
    */
-  public function getCustomFieldValues(): Collection
-  {
-      return $this->customFieldValues;
+  public function getCustomFieldValues(): Collection {
+    return $this->customFieldValues;
   }
 
-  public function addCustomFieldValue(CustomFieldValue $customFieldValue): self
-  {
-      if (!$this->customFieldValues->contains($customFieldValue)) {
-          $this->customFieldValues[] = $customFieldValue;
-          $customFieldValue->setTarget($this);
-      }
+  public function addCustomFieldValue(CustomFieldValue $customFieldValue): self {
+    if (!$this->customFieldValues->contains($customFieldValue)) {
+      $this->customFieldValues[] = $customFieldValue;
+      $customFieldValue->setTarget($this);
+    }
 
-      return $this;
+    return $this;
   }
 
-  public function removeCustomFieldValue(CustomFieldValue $customFieldValue): self
-  {
-      if ($this->customFieldValues->removeElement($customFieldValue)) {
-          // set the owning side to null (unless already changed)
-          if ($customFieldValue->getTarget() === $this) {
-              $customFieldValue->setTarget(null);
-          }
+  public function removeCustomFieldValue(CustomFieldValue $customFieldValue): self {
+    if ($this->customFieldValues->removeElement($customFieldValue)) {
+      // set the owning side to null (unless already changed)
+      if ($customFieldValue->getTarget() === $this) {
+        $customFieldValue->setTarget(NULL);
       }
+    }
 
-      return $this;
+    return $this;
   }
 
 }
