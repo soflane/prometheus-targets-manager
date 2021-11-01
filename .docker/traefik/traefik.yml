@@ -1,0 +1,30 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+# Docker configuration backend
+providers:
+  docker:
+    exposedByDefault: false
+  file:
+    filename: /etc/traefik/certificates.yml
+    watch: true
+
+log:
+  level: DEBUG
+
+# API and dashboard configuration
+api:
+  dashboard: false
+
+entrypoints:
+  web:
+    address: :80
+    http:
+      redirections:
+        entryPoint:
+          to: web-secure
+          scheme: https
+
+  web-secure:
+    address: :443

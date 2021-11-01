@@ -1,0 +1,87 @@
+version: '3'
+services:
+  nginx:
+    image: 'nginx:1.19-alpine'
+    container_name: ${APP_NAME}_nginx
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.nginx.loadbalancer.server.port=80
+      - traefik.http.routers.nginx.rule=Host(`${APP_NAME}.docker.test`)
+      - traefik.http.routers.nginx.tls=true
+    expose:
+      - '80'
+    volumes:
+      - '.docker/nginx/nginx.conf:/etc/nginx/nginx.conf'
+      - '.docker/nginx/servers/default.conf:/etc/nginx/conf.d/default.conf'
+      - '.:/app:ro'
+    depends_on:
+      - php
+    restart: always
+
+  php:
+    build:
+      context: .docker/php
+    container_name: ${APP_NAME}_php
+    environment:
+      XDEBUG_MODE: 'off'
+      XDEBUG_SESSION: ${APP_NAME}
+      XDEBUG_CONFIG: remote_host=host.docker.internal
+    volumes:
+      - '.:/app'
+      - '.docker/php/dev.ini:/usr/local/etc/php/conf.d/dev.ini'
+    restart: always
+    working_dir: /app/symfony
+    depends_on:
+      - database
+
+  database:
+    image: 'mariadb:10.5.9'
+    container_name: ${APP_NAME}_database
+    environment:
+      - MYSQL_ROOT_PASSWORD=lemp
+      - MYSQL_DATABASE=lemp
+    expose:
+      - '3306'
+    volumes:
+      - 'database-data:/var/lib/mysql'
+    restart: always
+
+  adminer:
+    image: adminer:latest
+    container_name: ${APP_NAME}_adminer
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.adminer.loadbalancer.server.port=8080
+      - traefik.http.routers.adminer.rule=Host(`${APP_NAME}-db.docker.test`)
+      - traefik.http.routers.adminer.tls=true
+    expose:
+      - '8080'
+    restart: always
+
+  #mail:
+  #  image: mailhog/mailhog
+  #  container_name: ${APP_NAME}_mailhog
+  #  labels:
+  #    - traefik.enable=true
+  #    - traefik.http.services.mailhog.loadbalancer.server.port=8025
+  #    - traefik.http.routers.mailhog.rule=Host(`${APP_NAME}-mail.docker.test`)
+  #    - traefik.http.routers.mailhog.tls=true
+  #  expose:
+  #    - '8025'
+  #  restart: always
+
+  reverse-proxy:
+    image: 'traefik:2.4'
+    container_name: ${APP_NAME}_proxy
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - '.docker/traefik/traefik.yml:/etc/traefik/traefik.yml'
+      - '.docker/traefik/certificates.yml:/etc/traefik/certificates.yml'
+      - '.docker/certs:/certs'
+    ports:
+      - '80:80'
+      - '443:443'
+    restart: always
+
+volumes:
+  database-data:
