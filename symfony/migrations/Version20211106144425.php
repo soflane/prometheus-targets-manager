@@ -14,7 +14,7 @@ final class Version20211106144425 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Created User, CustomField, CustomFieldValue & Target entities';
     }
 
     public function isTransactional(): bool {

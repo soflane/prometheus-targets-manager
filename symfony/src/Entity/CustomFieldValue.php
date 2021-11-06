@@ -4,13 +4,20 @@ namespace App\Entity;
 
 use App\Repository\CustomFieldValueRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\BlameableInterface;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Blameable\BlameableTrait;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Component\Uid\Ulid;
 
 /**
  * @ORM\Entity(repositoryClass=CustomFieldValueRepository::class)
  */
-class CustomFieldValue {
+class CustomFieldValue implements TimestampableInterface, BlameableInterface {
+
+  use TimestampableTrait;
+  use BlameableTrait;
 
   /**
    * @ORM\Id

@@ -6,14 +6,21 @@ use App\Repository\CustomFieldRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\BlameableInterface;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Blameable\BlameableTrait;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Component\Uid\Ulid;
 
 /**
  * @ORM\Entity(repositoryClass=CustomFieldRepository::class)
  */
-class CustomField
+class CustomField implements TimestampableInterface, BlameableInterface
 {
+    use TimestampableTrait;
+    use BlameableTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="ulid", unique=true)
