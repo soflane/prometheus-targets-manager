@@ -6,13 +6,20 @@ use App\Repository\TargetRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Knp\DoctrineBehaviors\Contract\Entity\BlameableInterface;
+use Knp\DoctrineBehaviors\Contract\Entity\TimestampableInterface;
+use Knp\DoctrineBehaviors\Model\Blameable\BlameableTrait;
+use Knp\DoctrineBehaviors\Model\Timestampable\TimestampableTrait;
 use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 use Symfony\Component\Uid\Ulid;
 
 /**
  * @ORM\Entity(repositoryClass=TargetRepository::class)
  */
-class Target {
+class Target implements TimestampableInterface, BlameableInterface {
+
+  use TimestampableTrait;
+  use BlameableTrait;
 
   /**
    * @ORM\Id
