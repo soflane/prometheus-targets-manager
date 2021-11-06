@@ -72,11 +72,9 @@ define do_setup
 	$(call do_db_healthcheck)
 	docker exec -it ${APP_NAME}_php sh -c  'chown web:web -R .'
 	docker exec -it ${APP_NAME}_php sh -c 'php bin/console cache:clear'
-	docker exec -it ${APP_NAME}_php sh -c 'php bin/console lexik:jwt:generate-keypair --skip-if-exists'
 	docker exec -it ${APP_NAME}_php sh -c 'php bin/console d:d:d --if-exists --force'
 	docker exec -it ${APP_NAME}_php sh -c 'php bin/console d:d:c --if-not-exists'
 	docker exec -it ${APP_NAME}_php sh -c 'php bin/console d:m:m --no-interaction'
-	docker exec -it ${APP_NAME}_php sh -c 'php bin/console d:f:l -q'
 	echo -e '\n'
 	echo -e '\e[42m${APP_NAME} setup completed\e[0m'
 	$(call do_display_commands)
