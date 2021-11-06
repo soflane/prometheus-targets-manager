@@ -1,16 +1,22 @@
 # prometheus-targets-manager
 
-....
+This project aims to facilitate the management of websites monitored by the blackbox exporter, via a web UI. 
+The UI would allow to add/remove sites, groups, and even add different fields in the prometheus database. 
 
 ## Features
 
-- Document upload
+- Add/remove http host
+- Add/remove group label
+- Add/remove custom fields 
+- Add/remove users (FUTURE UPDATE, we hope)
 - 
 
 
 ## Deployment
 
+### Wanna help ? 
 
+As i'm not really a dev, I'm surrounding myself by devs, but any help would be welcome, long live open source ! 
 
 ### Docker compose
 
