@@ -1,20 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CustomFieldController!{% endblock %}
+{% block title %}Create target{% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
-
-    {{ form_label(form.customFields) }}
-    {{ form_errors(form.customFields) }}
-
-    <ul>
-        {% for customField in form.customFields %}
-            <li>
-                {{ form_errors(customField) }}
-                {{ form_widget(customField) }}
-            </li>
-        {% endfor %}
-    </ul>
-    {{ form_end(form) }}
+    {{ form(form) }}
 {% endblock %}

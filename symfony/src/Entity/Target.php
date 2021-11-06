@@ -33,8 +33,7 @@ class Target {
   private $targetGroup;
 
   /**
-   * @ORM\OneToMany(targetEntity=CustomFieldValue::class, mappedBy="target",
-   *   orphanRemoval=true)
+   * @ORM\OneToMany(targetEntity=CustomFieldValue::class, mappedBy="target", orphanRemoval=true)
    */
   private $customFieldValues;
 

@@ -32,6 +32,11 @@ class CustomFieldValue {
    */
   private $target;
 
+  /**
+   * @ORM\Column(type="string", length=255)
+   */
+  private $value;
+
 
   public function getId(): ?Ulid {
     return $this->id;
@@ -55,6 +60,18 @@ class CustomFieldValue {
     $this->target = $target;
 
     return $this;
+  }
+
+  public function getValue(): ?string
+  {
+      return $this->value;
+  }
+
+  public function setValue(string $value): self
+  {
+      $this->value = $value;
+
+      return $this;
   }
 
 }
