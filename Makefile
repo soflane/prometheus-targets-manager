@@ -75,6 +75,7 @@ define do_setup
 	docker exec -it ${APP_NAME}_php sh -c 'php bin/console d:d:d --if-exists --force'
 	docker exec -it ${APP_NAME}_php sh -c 'php bin/console d:d:c --if-not-exists'
 	docker exec -it ${APP_NAME}_php sh -c 'php bin/console d:m:m --no-interaction'
+	docker exec -it ${APP_NAME}_php sh -c 'php bin/console d:f:l -q'
 	echo -e '\n'
 	echo -e '\e[42m${APP_NAME} setup completed\e[0m'
 	$(call do_display_commands)

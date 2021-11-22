@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TargetController extends AbstractController {
 
-  #[Route('/target/add', name: 'target_add')]
+  #[Route('/admin/target/add', name: 'target_add')]
   public function index(Request $request): Response {
     $target = new Target();
     $entityManager = $this->getDoctrine()->getManager();

@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CustomFieldController extends AbstractController {
 
-  #[Route('/custom-field/add', name: 'custom_field_add')]
+  #[Route('/admin/custom-field/add', name: 'custom_field_add')]
   public function index(Request $request): Response {
     $customField = new CustomField();
     $form = $this->createForm(CustomFieldType::class, $customField);
