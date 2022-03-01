@@ -147,8 +147,8 @@ define do_display_app_info
 	echo -e 'https://${APP_NAME}.docker.test/'
 	echo -e 'Database: https://${APP_NAME}-db.docker.test'
 	echo -e 'To resolve the browser SSL errors, exceute the following commands:\n'
-	echo -e '\tWindows (in powershell as admin): certutil -addstore -f "ROOT" .docker/certs/kickoff.crt\n'
-	echo -e '\tMacOS: sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain .docker/certs/kickoff.crt'
+	echo -e '\tWindows (in powershell as admin): certutil -addstore -f "ROOT" .docker/certs/docker.crt\n'
+	echo -e '\tMacOS: sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain .docker/certs/docker.crt'
 endef
 
 define do_display_commands
